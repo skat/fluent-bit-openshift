@@ -821,6 +821,8 @@ int flb_engine_start(struct flb_config *config)
                                  ret);
                         ret = config->exit_status_code;
                         flb_engine_shutdown(config);
+                        close(config->ch_self_events[0]);
+                        close(config->ch_self_events[1]);
                         config = NULL;
                         return ret;
                     }

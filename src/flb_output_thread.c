@@ -351,6 +351,9 @@ static void output_thread(void *data)
      * - scheduler context
      * - parameters helper for coroutines
      */
+    close(th_ins->ch_thread_events[0]);
+    close(th_ins->ch_thread_events[1]);
+
     upstream_thread_destroy(th_ins);
     flb_upstream_conn_active_destroy_list(&th_ins->upstreams);
     flb_upstream_conn_pending_destroy_list(&th_ins->upstreams);
@@ -549,6 +552,8 @@ void flb_output_thread_pool_destroy(struct flb_output_instance *ins)
             continue;
         }
         pthread_join(th->tid, NULL);
+        close(th_ins->ch_parent_events[0]);
+        close(th_ins->ch_parent_events[1]);
         flb_free(th_ins);
     }
 
